@@ -1,0 +1,19 @@
+{% extends "myapp/base.html" %}
+{% block title %}Hire Talent{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Post a Job Opening</h2>
+<form method="post" class="card p-4 shadow-sm">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-3">
+            <label class="form-label">{{ field.label_tag }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger small">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+{% endblock %}
