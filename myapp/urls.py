@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.landing_page, name='landing'),
     path('find-job/', views.find_job, name='find_job'),
     path('hire-talent/', views.hire_talent, name='hire_talent'),
+    path('apply/<int:job_id>/', views.apply_job, name='apply_job'), 
 ]

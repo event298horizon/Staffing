@@ -1,33 +1,39 @@
 {% extends "myapp/base.html" %}
 {% block title %}Find a Job{% endblock %}
-
 {% block content %}
 <h2 class="mb-4">Search for Jobs</h2>
 
 <form method="get" class="mb-4 row g-3">
-    <div class="col-md-8">
-        <input type="text" name="q" class="form-control" placeholder="Search by job title, company, location..." value="{{ request.GET.q }}">
-    </div>
-    <div class="col-md-4">
-        <button type="submit" class="btn btn-primary w-100">Search</button>
-    </div>
+  <div class="col-md-8">
+    <input
+      type="text"
+      name="q"
+      class="form-control"
+      placeholder="Search by job title, company, location..."
+      value="{{ request.GET.q }}"
+    />
+  </div>
+  <div class="col-md-4">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
 </form>
 
 {% if jobs %}
-    <div class="row">
-        {% for job in jobs %}
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">{{ job.job_title }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ job.company_name }} - {{ job.location }}</h6>
-                    <p class="card-text">{{ job.description|truncatewords:25 }}</p>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+<div class="row">
+  {% for job in jobs %}
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <a href="{% url 'apply_job' job.id %}" class="card-body">
+        <h5 class="card-title">{{ job.job_title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          {{ job.company_name }} - {{ job.location }}
+        </h6>
+        <p class="card-text">{{ job.description|truncatewords:25 }}</p>
+      </a>
     </div>
+  </div>
+  {% endfor %}
+</div>
 {% else %}
-    <p class="text-muted">No jobs found.</p>
-{% endif %}
-{% endblock %}
+<p class="text-muted">No jobs found.</p>
+{% endif %} {% endblock %}

@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Job
 from .forms import JobForm
+from .forms import JobApplicationForm
 
 def landing_page(request):
     return render(request, 'myapp/landing.html')
@@ -24,3 +25,18 @@ def hire_talent(request):
     else:
         form = JobForm()
     return render(request, 'myapp/hire_talent.html', {'form': form})
+
+def apply_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id, approved=True)
+
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = job
+            application.save()
+            return render(request, 'myapp/application_success.html', {'job': job})
+    else:
+        form = JobApplicationForm()
+
+    return render(request, 'myapp/apply_job.html', {'job': job, 'form': form}) 
